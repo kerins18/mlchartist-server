@@ -88,4 +88,5 @@ def api_cached_backtest():
     ## output it
     return jsonify(response)
 
-app.run()
+if __name__ == '__main__':
+    app.run()
