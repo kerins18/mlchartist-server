@@ -42,9 +42,6 @@ def home():
 
 @app.route('/api/live-backtest', methods=['GET'])
 def api_live_backtest():
-    # Check if an ID was provided as part of the URL.
-    # If ID is provided, assign it to a variable.
-    # If no ID is provided, display an error in the browser.
     if 'companies' in request.args:
         N = int(request.args['companies'])
     else:
@@ -61,20 +58,19 @@ def api_live_backtest():
     returns = avg_ret.merge(nasdaq_100_returns['NDX'], left_index=True, right_index=True, how='inner') +1
     final_ret = returns.fillna(value=1)
 
-    response =  {
-        'date': final_ret.index.values.tolist(),
-        'avg_return': final_ret.avg_return.values.tolist(),
-        'NDX': final_ret.NDX.values.tolist()
-    }
+    # response =  {
+    #     'date': final_ret.index.values.tolist(),
+    #     'avg_return': final_ret.avg_return.values.tolist(),
+    #     'NDX': final_ret.NDX.values.tolist()
+    # }
+    result = final_ret.to_json(orient="records")
+    response = json.loads(result)
 
     return jsonify(response)
 
 
 @app.route('/api/backtest', methods=['GET'])
 def api_cached_backtest():
-    # Check if an ID was provided as part of the URL.
-    # If ID is provided, assign it to a variable.
-    # If no ID is provided, display an error in the browser.
     if 'companies' in request.args:
         N = int(request.args['companies'])
     else:
@@ -87,6 +83,8 @@ def api_cached_backtest():
 
     ## output it
     return jsonify(response)
+
+
 
 if __name__ == '__main__':
     app.run()
