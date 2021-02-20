@@ -1,4 +1,4 @@
 flask
 pandas==0.24.2
 numpy
-json
+json5==0.9.5
